@@ -1,5 +1,6 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CallbackContext, CommandHandler, CallbackQueryHandler 
+import pandas as pd
 
 TOKEN = '5972314664:AAFt3BimlGFnHrF-wmtXcb1S7lAzTfaTOCo'
 #TODO: replace ID
@@ -12,7 +13,8 @@ def start(update: Update, context: CallbackContext):
         [InlineKeyboardButton("Послуги", callback_data='services')], #InlineKeyboardButton('Ціни', callback_data='prices')],
         [InlineKeyboardButton("Поширені запитання", callback_data='questions')],
         [InlineKeyboardButton("Налаштування", callback_data='settings')],
-        [InlineKeyboardButton("Зв'язатися з менеджером", url=f"https://t.me/{MANAGER}")]
+        [InlineKeyboardButton("Зв'язатися з менеджером", url=f"https://t.me/{MANAGER}")],
+        [InlineKeyboardButton("Перевірити статус замовлення", callback_data='status')]
     ]
     
     reply_keyboard = InlineKeyboardMarkup(keyboard)
@@ -33,7 +35,7 @@ def button(update: Update, context: CallbackContext):
         reply_keyboard = InlineKeyboardMarkup(keyboard)
 
         query.edit_message_text('Тестове повідомлення', reply_markup=reply_keyboard)
-        
+    
     if query.data == 'questions':
         keyboard = [
             [InlineKeyboardButton("Запитання 1", callback_data='question 1'), InlineKeyboardButton("Запитання 2", callback_data='question 2')],
@@ -54,6 +56,13 @@ def button(update: Update, context: CallbackContext):
         reply_keyboard = InlineKeyboardMarkup(keyboard)
 
         query.edit_message_text('Тестове повідомлення', reply_markup=reply_keyboard)
+    
+    if query.data == 'status':
+        keyboard = [
+            [InlineKeyboardButton('<< Повернутися назад', callback_data='return1')]
+        ]
+        
+        query.edit_message_caption('Введіть номер замовлення:', reply_markup=reply_keyboard)
     
     if query.data == 'return1':
         keyboard = [
